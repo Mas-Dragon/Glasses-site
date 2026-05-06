@@ -8,7 +8,7 @@ import Checkout from "./Checkout";
 export default function App() {
     return (
 
-        <BrowserRouter>
+        <BrowserRouter basename="/Glasses-site">
             <Routes>
                 <Route path="/" element={<Landing />} />
                 <Route path="/products" element={<Products />} />
