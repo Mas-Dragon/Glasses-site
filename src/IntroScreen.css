@@ -1,0 +1,452 @@
+﻿.intro-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    overflow: hidden;
+    pointer-events: none;
+    isolation: isolate;
+}
+
+:root {
+    --intro-center-x: 50%;
+    --intro-center-y: 50%;
+    --intro-meet-y-top: -108%;
+    --intro-meet-y-bottom: 10%;
+}
+
+.intro-bg {
+    position: absolute;
+    inset: 0;
+    background: #000;
+    opacity: 1;
+    transform: scale(1) translateZ(0);
+    transition: opacity 0.9s ease, transform 0.9s ease, filter 0.9s ease;
+    will-change: transform, opacity;
+}
+
+    .intro-bg::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(circle at center, rgba(255, 255, 255, 0.045) 0%, transparent 56%);
+        opacity: 0.22;
+        animation: introPulse 1.6s ease-in-out infinite;
+        will-change: transform, opacity;
+    }
+
+.intro-logo {
+    position: absolute;
+    top: var(--intro-center-y);
+    left: var(--intro-center-x);
+    transform: translate3d(-50%, -50%, 0) scale(0.96);
+    z-index: 3;
+    font-size: 3rem;
+    font-weight: 900;
+    letter-spacing: 0.5em;
+    color: #f5f5f5;
+    text-transform: uppercase;
+    opacity: 0;
+    filter: blur(10px);
+    animation: introLogoEnter 0.95s cubic-bezier(0.22, 1, 0.36, 1) 0.15s forwards;
+    transition: opacity 0.75s ease, transform 0.75s ease, filter 0.75s ease;
+    will-change: transform, opacity, filter;
+}
+
+.intro-logo-mini {
+    font-size: 1rem;
+    letter-spacing: 0.35em;
+    font-weight: 700;
+}
+
+/* ================== HOME INTRO ================== */
+
+.intro-ring {
+    position: absolute;
+    top: var(--intro-center-y);
+    left: var(--intro-center-x);
+    width: clamp(900px, 145vh, 1700px);
+    height: clamp(900px, 145vh, 1700px);
+    border-radius: 50%;
+    pointer-events: none;
+    will-change: transform, opacity;
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+}
+
+    .intro-ring::before,
+    .intro-ring::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        pointer-events: none;
+    }
+
+    .intro-ring::before {
+        inset: -10px;
+        border: 1px solid rgba(255, 255, 255, 0.07);
+        opacity: 0.55;
+    }
+
+    .intro-ring::after {
+        inset: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        opacity: 0.38;
+    }
+
+.intro-ring-top {
+    transform: translate3d(-50%, -118vh, 0) scale(1.14);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 18px rgba(255, 255, 255, 0.12), 0 0 46px rgba(255, 255, 255, 0.06);
+    background: radial-gradient(circle at center, rgba(0, 0, 0, 0) 56%, rgba(0, 0, 0, 0.76) 80%, rgba(0, 0, 0, 1) 100%);
+    animation: introTopEnter 1.15s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.intro-ring-bottom {
+    transform: translate3d(-50%, 118vh, 0) scale(1.18);
+    border: 2px solid rgba(255, 255, 255, 0.14);
+    box-shadow: 0 0 22px rgba(255, 255, 255, 0.12), 0 0 60px rgba(255, 255, 255, 0.07);
+    background: radial-gradient(circle at center, rgba(0, 0, 0, 0) 56%, rgba(0, 0, 0, 0.76) 80%, rgba(0, 0, 0, 1) 100%);
+    animation: introBottomEnter 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* ================== PRODUCTS INTRO ================== */
+
+.intro-products-sweep {
+    position: absolute;
+    top: -18%;
+    left: -36%;
+    width: 56%;
+    height: 145%;
+    transform: rotate(14deg) translateX(-120%);
+    background: linear-gradient( 90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 216, 111, 0.02) 25%, rgba(255, 216, 111, 0.30) 50%, rgba(255, 216, 111, 0.06) 75%, rgba(255, 255, 255, 0) 100% );
+    opacity: 0;
+    filter: blur(10px);
+    animation: introProductsSweep 0.95s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.intro-products-sweep-2 {
+    filter: blur(18px);
+    animation-delay: 0.06s;
+}
+
+.intro-products-glow {
+    position: absolute;
+    inset: -20%;
+    background: radial-gradient(circle at center, rgba(255, 216, 111, 0.16), transparent 26%), radial-gradient(circle at center, rgba(255, 255, 255, 0.08), transparent 38%);
+    opacity: 0;
+    transform: scale(0.92);
+    filter: blur(20px);
+    animation: introProductsGlow 0.95s ease forwards;
+}
+
+/* ================== SPECS INTRO ================== */
+
+.intro-specs-grid {
+    position: absolute;
+    inset: -4%;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+    background-size: 42px 42px;
+    mask-image: radial-gradient(circle at center, black 0%, black 30%, transparent 72%);
+    -webkit-mask-image: radial-gradient(circle at center, black 0%, black 30%, transparent 72%);
+    opacity: 0;
+    transform: scale(1.06);
+    animation: introSpecsGrid 0.95s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.intro-specs-ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 56vh;
+    height: 56vh;
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0.84);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    box-shadow: 0 0 22px rgba(255, 255, 255, 0.08);
+    opacity: 0;
+    animation: introSpecsRing 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.intro-specs-ring-2 {
+    width: 72vh;
+    height: 72vh;
+    border-color: rgba(255, 216, 111, 0.14);
+    box-shadow: 0 0 30px rgba(255, 216, 111, 0.08);
+    animation-delay: 0.05s;
+}
+
+/* ================== CHECKOUT INTRO ================== */
+
+.intro-checkout-glow {
+    position: absolute;
+    inset: -18%;
+    background: radial-gradient(circle at center, rgba(255, 216, 111, 0.20), transparent 28%), radial-gradient(circle at center, rgba(255, 255, 255, 0.08), transparent 42%);
+    opacity: 0;
+    transform: scale(0.88);
+    filter: blur(16px);
+    animation: introCheckoutGlow 0.95s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.intro-checkout-lock {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 72px;
+    height: 86px;
+    transform: translate(-50%, -50%) scale(0.88);
+    opacity: 0;
+    animation: introCheckoutLock 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.intro-checkout-lock-shackle {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 34px;
+    height: 30px;
+    transform: translateX(-50%);
+    border: 3px solid rgba(255, 216, 111, 0.95);
+    border-bottom: none;
+    border-radius: 18px 18px 0 0;
+    box-shadow: 0 0 16px rgba(255, 216, 111, 0.18);
+}
+
+.intro-checkout-lock-body {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 72px;
+    height: 54px;
+    transform: translateX(-50%);
+    border-radius: 16px;
+    background: linear-gradient(180deg, rgba(255, 216, 111, 0.96), rgba(255, 138, 60, 0.96));
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.32);
+}
+
+/* ================== PHASE HANDOFF ================== */
+
+.intro-phase-handoff .intro-bg {
+    opacity: 0;
+    transform: scale(1.04) translateZ(0);
+    filter: blur(8px);
+}
+
+.intro-home.intro-phase-handoff .intro-logo {
+    opacity: 0;
+    transform: translate3d(-50%, -56%, 0) scale(1.02);
+    filter: blur(8px);
+}
+
+.intro-home.intro-phase-handoff .intro-ring-top {
+    animation: introTopHandoff 1.05s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.intro-home.intro-phase-handoff .intro-ring-bottom {
+    animation: introBottomHandoff 1.05s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.intro-products.intro-phase-handoff .intro-products-sweep,
+.intro-products.intro-phase-handoff .intro-products-sweep-2,
+.intro-products.intro-phase-handoff .intro-products-glow,
+.intro-products.intro-phase-handoff .intro-logo-mini,
+.intro-specs.intro-phase-handoff .intro-specs-grid,
+.intro-specs.intro-phase-handoff .intro-specs-ring,
+.intro-specs.intro-phase-handoff .intro-specs-ring-2,
+.intro-specs.intro-phase-handoff .intro-logo-mini,
+.intro-checkout.intro-phase-handoff .intro-checkout-glow,
+.intro-checkout.intro-phase-handoff .intro-checkout-lock,
+.intro-checkout.intro-phase-handoff .intro-logo-mini {
+    opacity: 0 !important;
+    filter: blur(6px);
+    transition: opacity 0.45s ease, filter 0.45s ease, transform 0.45s ease;
+}
+
+/* ================== ANIMATIONS ================== */
+
+@keyframes introLogoEnter {
+    0% {
+        opacity: 0;
+        transform: translate3d(-50%, -50%, 0) scale(0.96);
+        filter: blur(10px);
+        letter-spacing: 0.5em;
+    }
+
+    100% {
+        opacity: 1;
+        transform: translate3d(-50%, -50%, 0) scale(1);
+        filter: blur(0);
+        letter-spacing: 0.35em;
+    }
+}
+
+@keyframes introTopEnter {
+    0% {
+        transform: translate3d(-50%, var(--intro-meet-y-top), 0) scale(1.2);
+        opacity: 0.22;
+    }
+
+    100% {
+        transform: translate3d(-50%, var(--intro-meet-y-top), 0) scale(1.05);
+        opacity: 0.96;
+    }
+}
+
+@keyframes introBottomEnter {
+    0% {
+        transform: translate3d(-50%, var(--intro-meet-y-bottom), 0) scale(1.24);
+        opacity: 0.16;
+    }
+
+    100% {
+        transform: translate3d(-50%, var(--intro-meet-y-bottom), 0) scale(1.08);
+        opacity: 0.72;
+    }
+}
+
+@keyframes introTopHandoff {
+    0% {
+        transform: translate3d(-50%, -50%, 0) scale(1.05);
+        opacity: 0.96;
+    }
+
+    100% {
+        transform: translate3d(-50%, -61%, 0) scale(0.96);
+        opacity: 0;
+    }
+}
+
+@keyframes introBottomHandoff {
+    0% {
+        transform: translate3d(-50%, -50%, 0) scale(1.08);
+        opacity: 0.72;
+    }
+
+    100% {
+        transform: translate3d(-50%, -39%, 0) scale(0.95);
+        opacity: 0;
+    }
+}
+
+@keyframes introPulse {
+    0%, 100% {
+        opacity: 0.18;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.3;
+        transform: scale(1.03);
+    }
+}
+
+@keyframes introProductsSweep {
+    0% {
+        opacity: 0;
+        transform: rotate(14deg) translateX(-120%);
+    }
+
+    18% {
+        opacity: 1;
+    }
+
+    65% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+        transform: rotate(14deg) translateX(250%);
+    }
+}
+
+@keyframes introProductsGlow {
+    0% {
+        opacity: 0;
+        transform: scale(0.92);
+    }
+
+    24% {
+        opacity: 0.72;
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(1.05);
+    }
+}
+
+@keyframes introSpecsGrid {
+    0% {
+        opacity: 0;
+        transform: scale(1.08);
+    }
+
+    25% {
+        opacity: 0.42;
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(1);
+    }
+}
+
+@keyframes introSpecsRing {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.84);
+    }
+
+    30% {
+        opacity: 0.9;
+    }
+
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(1.06);
+    }
+}
+
+@keyframes introCheckoutGlow {
+    0% {
+        opacity: 0;
+        transform: scale(0.88);
+    }
+
+    25% {
+        opacity: 0.85;
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(1.05);
+    }
+}
+
+@keyframes introCheckoutLock {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.88);
+        filter: blur(4px);
+    }
+
+    28% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+        filter: blur(0);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(1.03);
+        filter: blur(2px);
+    }
+}
+
+.intro-ring,
+.intro-logo,
+.intro-bg {
+    will-change: transform, opacity;
+    transform: translateZ(0);
+}
