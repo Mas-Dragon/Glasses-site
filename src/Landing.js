@@ -7,12 +7,13 @@ import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion"
 import * as THREE from "three";
 import { Link } from "react-router-dom";
 import IntroScreen from "./IntroScreen";
+const asset = (path) => `${process.env.PUBLIC_URL}${path}`;
 
 /* ================== 3D MODEL ================== */
 
 function GlassesModel({ variantLook, scrollProgress = 0 }) {
     const ref = useRef();
-    const { scene } = useGLTF("/glasses.glb");
+    const { scene } = useGLTF(asset("/glasses.glb"));
 
     const introProgress = useRef(0);
 
@@ -285,7 +286,7 @@ function TechBlueprintSection() {
                     <div className={`bp-spot bp-spot-${activePin}`} />
 
                     <motion.img
-                        src="/glasses-blueprint.png"
+                        src={asset("/glasses-blueprint.png")}
                         alt="Glasses technology blueprint"
                         className="bp-image"
                         style={{ y: imageY }}
@@ -425,14 +426,14 @@ function LensComparisonSection() {
                     onMouseLeave={handleMouseLeave}
                 >
                     <div className="comparison-layer comparison-before">
-                        <img src="/comparison-base1.png" alt="Standard lens view" className="comparison-image" />
+                        <img src={asset("/comparison-base1.png")} alt="Standard lens view" className="comparison-image" />
                     </div>
 
                     <div
                         className="comparison-layer comparison-after"
                         style={{ clipPath: `inset(0 ${100 - value}% 0 0)` }}
                     >
-                        <img src="/comparison-base2.png" alt="IDEAL lens view" className="comparison-image" />
+                        <img src={asset("/comparison-base2.png")} alt="IDEAL lens view" className="comparison-image" />
                     </div>
 
                     <div className="comparison-glow" style={{ left: `${value}%` }} />
@@ -501,7 +502,7 @@ const anglesData = [
         id: "front",
         title: "Front view",
         desc: "Balanced proportions, clean silhouette.",
-        img: "/angles-front.png",
+        img: asset("/angles-front.png"),
         productId: "classic",
         productTitle: "Classic Black",
         productTagline: "Front-balanced proportions with a clean premium silhouette.",
@@ -510,7 +511,7 @@ const anglesData = [
         id: "three-quarter",
         title: "3/4 angle",
         desc: "Shows lens depth and curvature.",
-        img: "/angles-front.png",
+        img: asset("/angles-front.png"),
         productId: "classic",
         productTitle: "Classic Black",
         productTagline: "Curvature and lens depth tuned for a sharper premium look.",
@@ -596,7 +597,7 @@ function AnglesSection() {
                                 viewport={{ once: true, amount: 0.35 }}
                             >
                                 <div className="angle-media">
-                                    <img src={angle.img} alt={angle.title} loading="lazy" />
+                                    <img src={asset(angle.img)} alt={angle.title} loading="lazy" />
                                     <div className="angle-gold-shimmer" />
                                 </div>
                                 <h3>{angle.title}</h3>
