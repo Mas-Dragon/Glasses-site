@@ -11,7 +11,7 @@ const asset = (path) => `${process.env.PUBLIC_URL}${path}`;
 
 /* ================== 3D MODEL ================== */
 
-function GlassesModel({ variantLook, scrollProgress = 0 }) {
+function GlassesModel({ variantLook, scrollProgress = 0, deviceMode = "desktop" }) {
     const ref = useRef();
     const { scene } = useGLTF(asset("/glasses.glb"));
 
@@ -27,8 +27,8 @@ function GlassesModel({ variantLook, scrollProgress = 0 }) {
         targetLens.current.set(variantLook.lens);
     }, [variantLook.frame, variantLook.lens]);
 
-    const variantSettings = useMemo(
-        () => [
+    const variantSettings = useMemo(() => {
+        const desktop = [
             {
                 rotation: { x: 0.04, y: 0.28, z: 0.0 },
                 position: { x: 1.55, y: -0.18, z: 0 },
@@ -44,9 +44,60 @@ function GlassesModel({ variantLook, scrollProgress = 0 }) {
                 position: { x: 1.52, y: -0.16, z: 0 },
                 scale: 5.12,
             },
-        ],
-        []
-    );
+        ];
+
+        const tablet = [
+            {
+                rotation: { x: 0.04, y: 0.18, z: 0.0 },
+                position: { x: 0.9, y: -0.06, z: 0 },
+                scale: 4.25,
+            },
+            {
+                rotation: { x: 0.12, y: -0.16, z: 0.03 },
+                position: { x: 0.82, y: -0.06, z: 0 },
+                scale: 4.15,
+            },
+            {
+                rotation: { x: -0.06, y: 0.28, z: -0.025 },
+                position: { x: 0.86, y: -0.04, z: 0 },
+                scale: 4.2,
+            },
+        ];
+
+        const mobile = [
+            {
+                rotation: { x: 0.03, y: 0.12, z: 0.0 },
+                position: { x: 0.08, y: 0.42, z: 0 },
+                scale: 3.05,
+            },
+            {
+                rotation: { x: 0.1, y: -0.12, z: 0.02 },
+                position: { x: 0.04, y: 0.42, z: 0 },
+                scale: 3.0,
+            },
+            {
+                rotation: { x: -0.04, y: 0.22, z: -0.02 },
+                position: { x: 0.06, y: 0.44, z: 0 },
+                scale: 3.03,
+            },
+        ];
+
+        if (deviceMode === "mobile") return mobile;
+        if (deviceMode === "tablet") return tablet;
+        return desktop;
+    }, [deviceMode]);
+
+    const introStart = useMemo(() => {
+        if (deviceMode === "mobile") {
+            return { position: { x: 0.9, y: 0.88, z: 0.35 }, scale: 3.25 };
+        }
+
+        if (deviceMode === "tablet") {
+            return { position: { x: 1.8, y: 0.45, z: 0.35 }, scale: 4.45 };
+        }
+
+        return { position: { x: 3.3, y: 0.7, z: 0.35 }, scale: 5.35 };
+    }, [deviceMode]);
 
     const getScrollDrivenSettings = (progress) => {
         const clamped = THREE.MathUtils.clamp(progress, 0, 1);
@@ -154,11 +205,11 @@ function GlassesModel({ variantLook, scrollProgress = 0 }) {
             const t = Math.min(introProgress.current, 1);
             const ease = 1 - Math.pow(1 - t, 3);
 
-            ref.current.position.x = THREE.MathUtils.lerp(3.3, settings.position.x, ease);
-            ref.current.position.y = THREE.MathUtils.lerp(0.7, settings.position.y, ease);
-            ref.current.position.z = THREE.MathUtils.lerp(0.35, settings.position.z, ease);
+            ref.current.position.x = THREE.MathUtils.lerp(introStart.position.x, settings.position.x, ease);
+            ref.current.position.y = THREE.MathUtils.lerp(introStart.position.y, settings.position.y, ease);
+            ref.current.position.z = THREE.MathUtils.lerp(introStart.position.z, settings.position.z, ease);
 
-            const scale = THREE.MathUtils.lerp(5.35, settings.scale, ease);
+            const scale = THREE.MathUtils.lerp(introStart.scale, settings.scale, ease);
             ref.current.scale.set(scale, scale, scale);
 
             ref.current.rotation.y = THREE.MathUtils.lerp(
@@ -213,15 +264,30 @@ function GlassesModel({ variantLook, scrollProgress = 0 }) {
         ref.current.scale.set(newScale, newScale, newScale);
     });
 
-    return <primitive ref={ref} object={scene} position={[3.3, 0.7, 0.35]} scale={5.35} />;
+    return (
+        <primitive
+            ref={ref}
+            object={scene}
+            position={[
+                introStart.position.x,
+                introStart.position.y,
+                introStart.position.z,
+            ]}
+            scale={introStart.scale}
+        />
+    );
 }
 
-function GlassesScene({ variantLook, scrollProgress }) {
+function GlassesScene({ variantLook, scrollProgress, deviceMode = "desktop" }) {
     return (
         <Canvas
-            camera={{ position: [0, -0.55, 4.5], fov: 32 }}
+            camera={
+                deviceMode === "mobile"
+                    ? { position: [0, -0.25, 5.4], fov: 38 }
+                    : { position: [0, -0.55, 4.5], fov: 32 }
+            }
             shadows
-            dpr={[1, 2]}
+            dpr={deviceMode === "mobile" ? [1, 1.35] : [1, 2]}
             style={{ background: "transparent" }}
             gl={{ alpha: true, antialias: true }}
         >
@@ -236,6 +302,7 @@ function GlassesScene({ variantLook, scrollProgress }) {
                 <GlassesModel
                     variantLook={variantLook}
                     scrollProgress={scrollProgress}
+                    deviceMode={deviceMode}
                 />
             </Suspense>
         </Canvas>
@@ -611,10 +678,33 @@ function AnglesSection() {
     );
 }
 
+function useDeviceMode() {
+    const getMode = () => {
+        if (typeof window === "undefined") return "desktop";
+        if (window.innerWidth <= 640) return "mobile";
+        if (window.innerWidth <= 1024) return "tablet";
+        return "desktop";
+    };
+
+    const [deviceMode, setDeviceMode] = useState(getMode);
+
+    useEffect(() => {
+        const handleResize = () => setDeviceMode(getMode());
+
+        handleResize();
+        window.addEventListener("resize", handleResize);
+
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
+
+    return deviceMode;
+}
+
 /* ================== MAIN APP ================== */
 
 export default function Landing() {
     const [activeVariant, setActiveVariant] = useState(0);
+    const deviceMode = useDeviceMode();
 
     const variants = [
         {
@@ -701,6 +791,7 @@ export default function Landing() {
                         <GlassesScene
                             activeVariant={activeVariant}
                             variantLook={variantLooks[activeVariant]}
+                            deviceMode={deviceMode}
                         />
                     </div>
 
