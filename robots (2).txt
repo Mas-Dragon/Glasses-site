@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://mas-dragon.github.io/Glasses-site/sitemap.xml
