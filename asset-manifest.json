@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/Glasses-site/static/css/main.83244f4e.css",
-    "main.js": "/Glasses-site/static/js/main.41e11c69.js",
+    "main.css": "/Glasses-site/static/css/main.376c5577.css",
+    "main.js": "/Glasses-site/static/js/main.4a90fc59.js",
     "static/js/453.89a49490.chunk.js": "/Glasses-site/static/js/453.89a49490.chunk.js",
     "static/media/bp.png": "/Glasses-site/static/media/bp.19f34a6b1b96eb6482bc.png",
     "index.html": "/Glasses-site/index.html",
-    "main.83244f4e.css.map": "/Glasses-site/static/css/main.83244f4e.css.map",
-    "main.41e11c69.js.map": "/Glasses-site/static/js/main.41e11c69.js.map",
+    "main.376c5577.css.map": "/Glasses-site/static/css/main.376c5577.css.map",
+    "main.4a90fc59.js.map": "/Glasses-site/static/js/main.4a90fc59.js.map",
     "453.89a49490.chunk.js.map": "/Glasses-site/static/js/453.89a49490.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.83244f4e.css",
-    "static/js/main.41e11c69.js"
+    "static/css/main.376c5577.css",
+    "static/js/main.4a90fc59.js"
   ]
 }
